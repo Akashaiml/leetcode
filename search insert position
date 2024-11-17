@@ -1,0 +1,17 @@
+int searchInsert(int* nums, int numsSize, int target) {
+    int pos = 0;
+    int i = 0; 
+    while(i < numsSize){
+         if(*nums == target){
+            pos = i;
+            return pos;
+         }
+         if(*nums > target){
+            pos = i;
+            return pos;
+         }
+         nums++;
+         i++;
+    }
+    return numsSize;
+}
