@@ -1,0 +1,18 @@
+bool isPalindrome(char * s){
+    char* j = s + strlen(s) - 1;
+    
+    while(j > s) 
+    {  
+        if (isalnum(*s) && isalnum(*j))
+        {
+            if (tolower(*s++) != tolower(*j--)) return false;
+        }
+        else
+        {
+            if (!isalnum(*s)) ++s; if (!isalnum(*j)) --j;  // or (!isalnum(*s)) ? ++s : --j; 
+			// Didn't implement commented option to emphasize that non-alphanumeric characters can line up with each other, which would cause extra loop with the latter option
+        }
+    }
+    
+    return true;
+}
