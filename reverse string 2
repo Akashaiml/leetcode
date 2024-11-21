@@ -1,0 +1,29 @@
+void swap(char* s, int left, int right) {
+    while (left < right) {
+        char temp = s[left];
+        s[left++] = s[right];
+        s[right--] = temp;
+    }
+}
+
+char* reverseStr(char* s, int k) {
+    if (k == 1) {
+        return s;
+    }
+    int len = strlen(s) - 1;
+    int left = 0;
+    int right = k - 1;
+    if (right > len) {
+        right = len;
+    }
+    while (left < len) {
+        swap(s, left, right);
+        left += 2 * k;
+        right = left + k - 1;
+        if (right > len) {
+            right = len;
+        }
+    }
+
+    return s;
+}
