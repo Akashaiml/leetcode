@@ -1,0 +1,28 @@
+int longestPalindrome(char* s) {
+    int hash[52] = {0}; // Initialize a hash array to count occurrences of each character
+    int len = strlen(s); // Get the length of the string
+    int sum = 0; // This will store the length of the longest palindrome
+
+    // Count the frequency of each character in the string
+    for (int i = 0; i < len; i++) {
+        if (s[i] >= 'A' && s[i] <= 'Z') {
+            hash[s[i] - 'A']++; // Map uppercase letters to the first 26 elements of the hash array
+        }
+        if (s[i] >= 'a' && s[i] <= 'z') {
+            hash[s[i] - 'a' + 26]++; // Map lowercase letters to the next 26 elements of the hash array
+        }
+    }
+
+    int flag = 0; // Flag to check if there is at least one character with an odd frequency
+    // Calculate the length of the longest palindrome
+    for (int i = 0; i < 52; i++) {
+        if (hash[i] % 2 == 0) {
+            sum += hash[i]; // Add even frequencies directly to the palindrome length
+        }
+        if (hash[i] % 2 == 1) {
+            sum += hash[i] - 1; // Add the largest even part of odd frequencies to the palindrome length
+            flag = 1; // Set the flag to indicate there is an odd frequency
+        }
+    }
+    return sum + flag; // Add one to the palindrome length if there was at least one odd frequency
+}
