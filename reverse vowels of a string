@@ -1,0 +1,31 @@
+bool isVowel(char c) {
+    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'||c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U';
+}
+
+char* reverseVowels(char* s) {
+    int l = 0;
+    int r = strlen(s)-1;
+    while (l<r){
+        char tmp_l, tmp_r;
+        if (isVowel(s[l])){
+            tmp_l = s[l];
+        }
+        else {
+            l++;
+            tmp_l = 0;
+        }
+        if (isVowel(s[r])){
+            tmp_r = s[r];
+        }
+        else {
+            r--;
+            tmp_r = 0;
+        }
+        if (tmp_l && tmp_r){
+            char tmp = s[l];
+            s[l++] = s[r];
+            s[r--] = tmp;
+        }
+    }
+    return s;
+}
