@@ -1,0 +1,24 @@
+int numJewelsInStones(char* jewels, char* stones) {
+    int hash[52] = {0};     //Hash table
+    //Record every type of jewel you have
+    for(int i = 0; i < strlen(jewels); i++){
+        if(jewels[i] >= 'a')
+            hash[jewels[i] - 'a' + 26] = 1;     //hash[26] ~ hash[51]: 'a' ~ 'z'
+        else
+            hash[jewels[i] - 'A'] = 1;          //hash[0] ~ hash[25]: 'A' ~ 'Z'
+    }
+
+    //Count the number jewels you have
+    int cnt = 0;
+    for(int i = 0; i < strlen(stones); i++){
+        if(stones[i] >= 'a'){
+            if(hash[stones[i] - 'a' + 26])
+                cnt++;
+        }
+        else{
+            if(hash[stones[i] - 'A'])
+                cnt++;
+        }
+    }
+    return cnt;
+}
