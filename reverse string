@@ -1,0 +1,10 @@
+void reverseString(char* a, int n) {
+    int f=n-1;
+    for(int i=0;i<n/2;i++)
+    {
+        char t=a[i];
+        a[i]=a[f];
+        a[f]=t;
+        f--;
+    }
+}
