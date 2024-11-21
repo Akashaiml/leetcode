@@ -1,0 +1,20 @@
+int countSegments(char* s) {
+    if (*s==0) {
+        return 0;
+    }
+    int count=0;
+    int last_idx;
+    bool word=false;
+    while(*s) {
+        if (*s!=' ') {
+            word=true;
+            last_idx=s;
+        }
+        else if(word) {
+            count++;
+            word=false;
+        } 
+        s++;
+    }
+    return (last_idx!=(int)s-1) ? count: count+1;
+}
