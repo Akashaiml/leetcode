@@ -1,0 +1,31 @@
+int	ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+		return (c + 32);
+	return (c);
+}
+
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
+{
+	unsigned int	i;
+
+	if (!s || !f)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		f(i, &s[i]);
+		i++;
+	}
+}
+
+void to_lower_helper(unsigned int i, char *c)
+{
+    *c = ft_tolower(*c);
+}
+
+char* toLowerCase(char* s)
+{
+    ft_striteri(s, to_lower_helper);
+    return (s);
+}
