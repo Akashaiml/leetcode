@@ -1,0 +1,32 @@
+char* shortestCompletingWord(char* licensePlate, char** words, int wordsSize) {
+    int Plens = strlen(licensePlate), map1[26] = {0}, map2[26] = {0}, alens = INT_MAX, nums = 0;
+    for (int i = 0; i < Plens; i++) {
+        if (licensePlate[i] >= 'a' && licensePlate[i] <= 'z') {
+            map1[licensePlate[i] - 'a']++;
+            map2[licensePlate[i] - 'a']++;
+            nums++;
+        } else if (licensePlate[i] >= 'A' && licensePlate[i] <= 'Z') {
+            map1[licensePlate[i] - 'A']++;
+            map2[licensePlate[i] - 'A']++;
+            nums++;
+        }
+    }
+    char* ans = NULL;
+    for (int i = 0; i < wordsSize; i++) {
+        int wlens = strlen(words[i]);
+        if (wlens < nums) continue;
+        int cnts = 0;
+        for (int j = 0; j < wlens; j++) {
+            if (map2[words[i][j] - 'a'] > 0) {
+                map2[words[i][j] - 'a']--;
+                cnts++;
+            }
+        }
+        if (cnts == nums && wlens < alens) {
+            alens = wlens;
+            ans = words[i];
+        }
+        memcpy(map2, map1, 26 * sizeof(int));
+    }
+    return ans;
+}
