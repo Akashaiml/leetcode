@@ -1,0 +1,24 @@
+
+struct ListNode* removeElements(struct ListNode* head, int val){
+    struct ListNode* temp;
+
+    while(head && head->val == val) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+
+    struct ListNode *cur = head;
+
+    while(cur && (temp = cur->next)) {
+        if(temp->val == val) {
+            cur->next = temp->next;
+            free(temp);
+        }
+        else
+            cur = cur->next;
+    }
+
+
+    return head;
+}
