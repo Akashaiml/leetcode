@@ -1,0 +1,69 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+#define MAX_WORDS 200
+#define MAX_WORD_LEN 100
+
+typedef struct {
+    char *word;
+    int count;
+} WordEntry;
+
+char** uncommonFromSentences(char* s1, char* s2, int* returnSize) {
+    char **words = malloc(sizeof(char*) * MAX_WORDS);
+    WordEntry wordMap[MAX_WORDS];
+    int wordCount = 0, mapCount = 0;
+
+    char *delim = " ";
+    char *token = strtok(s1, delim);
+    while (token) {
+        int found = 0;
+        for (int i = 0; i < mapCount; ++i) {
+            if (strcmp(wordMap[i].word, token) == 0) {
+                wordMap[i].count++;
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            wordMap[mapCount].word = strdup(token);
+            wordMap[mapCount].count = 1;
+            ++mapCount;
+        }
+
+        token = strtok(NULL, delim);
+    }
+
+    token = strtok(s2, delim);
+    while (token) {
+        int found = 0;
+        for (int i = 0; i < mapCount; ++i) {
+            if (strcmp(wordMap[i].word, token) == 0) {
+                wordMap[i].count++;
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            wordMap[mapCount].word = strdup(token);
+            wordMap[mapCount].count = 1;
+            ++mapCount;
+        }
+
+        token = strtok(NULL, delim);
+    }
+
+    for (int i = 0; i < mapCount; ++i) {
+        if (wordMap[i].count == 1) {
+            words[wordCount] = strdup(wordMap[i].word);
+            ++wordCount;
+        }
+    }
+
+    *returnSize = wordCount;
+
+    return words;
+}
