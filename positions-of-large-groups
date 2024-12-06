@@ -1,0 +1,111 @@
+/*
+ * In a string s of lowercase letters, these 
+ * letters form consecutive groups of the same character.
+ * 
+ * For example, a string like s = "abbxxxxzyy" has the groups 
+ * "a", "bb", "xxxx", "z", and "yy".
+ * 
+ * A group is identified by an interval [start, end],
+ * where start and end denote the start and end indices 
+ * (inclusive) of the group. In the above example, 
+ * "xxxx" has the interval [3,6].
+ * 
+ * A group is considered large if it has 3 or more characters.
+ * 
+ * Return the intervals of every large group sorted in increasing 
+ * order by start index.
+ *
+ * 1 <= s.length <= 1000
+ * s contains lowercase English letters only.
+ */
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** largeGroupPositions(char * s, int* returnSize, int** returnColumnSizes){
+    /*
+     * Input:
+     *  s, string
+     */
+     
+    /*
+     * Algorithm:
+     *  s = "aabbbcccdddd"
+     *  (1) Scan every character, find out the start and end position of groups
+     */
+     
+    int len = strlen(s);
+    int **ans = (int **)malloc(sizeof(int *) * len);
+    int start = 0, end = 0;
+    char prev;
+    
+    *returnSize = 0;
+    *returnColumnSizes = malloc(sizeof(int) * len);
+
+    /*
+     * Dry run:
+     *  (1) s = "a", prev = 'a'
+     *      process 'a', prev = 'a', start = 0, end = 1
+     *      end - start = 1 < 3
+     *      => ans = 0
+     *  (2) s = "abbbc", prev = 'a'
+     *      process 'a', prev = 'a', start = 0, end = 1
+     *      process 'b', prev = 'a', 
+     *          end - start = 1, do nothing, start = 1, end = 1
+     *      process 'b', prev = 'b', do nothing, end = 2
+     *      process 'b', prev = 'b', do nothing, end = 3
+     *      process 'c', prev = 'b', start = 1, end = 4
+     *          end - start = 3, store [1,4-1] = [1,3]
+     *          start = 4, end = 5
+     *      check last group, end - start = 1, do nothing
+     */
+
+    prev = *s;
+     
+    while (*s) {
+    
+        if (*s != prev) {
+            
+            /* Store the start and end position of group */
+            if (end - start >= 3) {
+                ans[*returnSize] = (int *)malloc(sizeof(int) * 2);
+                ans[*returnSize][0] = start;
+                ans[*returnSize][1] = end - 1;
+                (*returnColumnSizes)[*returnSize] = 2;
+                (*returnSize)++;
+            }
+            
+            start = end;
+        }
+
+        prev = *s;
+        end++;
+        s++;
+    }
+    
+    if (end - start >= 3) {
+        ans[*returnSize] = (int *)malloc(sizeof(int) * 2);
+        ans[*returnSize][0] = start;
+        ans[*returnSize][1] = end - 1;
+        (*returnColumnSizes)[*returnSize] = 2;
+        (*returnSize)++;
+    }
+    
+    if (*returnSize == 0) {
+        free(ans);
+        free(*returnColumnSizes);
+        
+        *returnColumnSizes = NULL;
+        ans = NULL;
+    }
+     
+    /*
+     * Output:
+     *  *returnSize, row number of returned array
+     *  **returnColumnSizes, column number of each row of returned array
+     */
+     
+    return ans;
+}
