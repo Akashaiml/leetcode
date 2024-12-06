@@ -1,0 +1,22 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* numberOfLines(int* widths, int widthsSize, char * s, int* returnSize){
+
+    *returnSize=2;
+    int total=0;
+    int *arr=calloc(2,sizeof(int));
+    arr[0]=1;
+    while(*s){
+
+        total+=widths[*s-'a'];
+        if(total>100){
+            total=widths[*s-'a'];
+            arr[0]++;
+        }
+        s++;
+    }
+    
+    arr[1]=total;
+    return arr;
+}
