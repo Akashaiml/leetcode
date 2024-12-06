@@ -1,0 +1,65 @@
+
+int uniqueMorseRepresentations(char ** words, int wordsSize)
+{
+
+    int transNum = 0 ;
+    int indx = -1 ;
+    
+    char ** transArr = (char **) malloc( wordsSize * sizeof(char *) ) ;
+
+    char * morseArr[26] = { ".-","-...","-.-.","-..",".","..-.","--.",
+                            "....","..",".---","-.-", ".-..","--","-.",
+                            "---",".--.","--.-",".-.","...","-","..-",
+                            "...-",".--","-..-","-.--","--.." } ;
+    if( wordsSize == 1 )
+    {
+        transNum = 1 ;
+    }
+    else
+    {
+        for( int i = 0; i < wordsSize; i++ )
+        {
+            
+            int wordLen = strlen( words[i] ) ;
+
+            transArr[i] = (char *) calloc( ((wordLen * 4) + 1), sizeof(char) ) ;
+
+            for( int j = 0; j < wordLen; j++ )
+            {
+
+                indx =  words[i][j] - 'a' ;
+
+                strcat( transArr[i], morseArr[indx] ) ;
+
+            }
+
+        }
+
+        int i = 0 ;
+        int j = 0 ;
+
+        for( i = 0; i < wordsSize; i++ )
+        {
+
+            for( j = i + 1; j < wordsSize; j++ )
+            {
+
+                if( strcmp(transArr[i], transArr[j]) == 0 )
+                {
+                    break ;
+                }
+
+            }
+
+            if( j == wordsSize )
+            {
+                transNum++ ;
+            }
+
+        }
+
+    }
+
+    return transNum ;
+
+}
