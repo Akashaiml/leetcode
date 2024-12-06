@@ -1,0 +1,69 @@
+char* mostCommonWord(char* paragraph, char** banned, int bannedSize) {
+    int pSize = strlen(paragraph);
+    const char s[7] = {'!', '?', ',', ';', '.', ' ', 39};
+    char *token;
+    char** ansTable = malloc(0);
+    int* countTable = malloc(0);
+    int uniqueCount = 0;
+    bool ban;
+    bool found;
+    int max = 0, ans;
+    
+    // Convert the whole string to lower
+    for(int i = 0; i < pSize; i++)
+    {
+        paragraph[i] = tolower(paragraph[i]);
+    }
+    
+    // Get the first word
+    token = strtok(paragraph, s);
+    while( token != NULL ) 
+    {
+        ban = false;
+        found = false;
+        //Check if current word is banned
+        for(int i = 0; i < bannedSize; i++)
+        {
+            if(!strcmp(token, banned[i]))
+            {
+                ban = true;
+                break;
+            }
+        }
+        //If not banned, check with existing unique list
+        if(!ban)
+        {
+            for(int i = 0; i < uniqueCount; i++)
+            {
+                // If found, increment the count
+                if(!strcmp(token, ansTable[i]))
+                {
+                    found = true;
+                    countTable[i] += 1;
+                    break;
+                }
+            }
+            //If not found, add new item to the list
+            if(!found)
+            {
+                ansTable = realloc(ansTable, (uniqueCount+1)*sizeof(char*));
+                countTable = realloc(countTable, (uniqueCount+1)*sizeof(int));
+                ansTable[uniqueCount] = token;
+                countTable[uniqueCount] = 1;
+                uniqueCount++;
+            }
+        }
+        token = strtok(NULL, s);
+    }
+    
+    //Go through the unique list, find max and return;
+    for(int i = 0; i < uniqueCount; i++)
+    {
+        if(countTable[i] > max)
+        {
+            ans = i;
+            max = countTable[i];
+        }
+    }
+    return ansTable[ans];
+}
