@@ -1,0 +1,38 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume
+ * caller calls free().
+ */
+int** transpose(int** matrix, int matrixSize, int* matrixColSize,
+                int* returnSize, int** returnColumnSizes) {
+
+    // Get the largest value in matrixColSize
+    int length = sizeof(*matrixColSize)/sizeof(int);
+    int maxColSize = 0;
+    for (int i = 0; i < length; i++){
+        if (matrixColSize[i] > maxColSize){
+            maxColSize = matrixColSize[i];
+        }
+    }
+
+    int** ans = malloc(maxColSize * sizeof(int*));
+    *returnSize = maxColSize;
+    *returnColumnSizes = malloc(maxColSize * sizeof(int));
+
+    // Create the solution array before transpose loop
+    // Undefined zones are filled with zero.
+    for (int i = 0; i < maxColSize; i++) {
+        ans[i] = calloc(matrixSize , sizeof(int));
+        (*returnColumnSizes)[i] = matrixSize;
+    }
+
+    // Loop to move values (transposed)
+    for (int i = 0; i < matrixSize; i++) {
+        for (int j = 0; j < matrixColSize[i]; j++) {
+            ans[j][i] = matrix[i][j];
+        }
+    }
+
+    return ans;
+}
