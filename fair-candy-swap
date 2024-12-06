@@ -1,0 +1,24 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* fairCandySwap(int* aliceSizes, int aliceSizesSize, int* bobSizes, int bobSizesSize, int* returnSize) {
+    int *res=malloc(2*sizeof(int));
+    *returnSize=2;
+    int a=0,b=0;
+    for(int i=0;i<aliceSizesSize;i++){
+        a=a+aliceSizes[i];
+    }
+    for(int i=0;i<bobSizesSize;i++){
+        b=b+bobSizes[i];
+    }
+    for(int i=0;i<bobSizesSize;i++){
+        for(int j=0;j<aliceSizesSize;j++){
+            if((b+aliceSizes[j]-bobSizes[i])==(bobSizes[i]+a-aliceSizes[j])){
+                res[0]=aliceSizes[j];
+                res[1]=bobSizes[i];
+                return res;
+            }
+        }
+    }
+    return 0;
+}
