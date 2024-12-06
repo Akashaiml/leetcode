@@ -1,0 +1,84 @@
+void processing(char* conversion, int index, int* point1, int* point2)
+{
+    if (conversion[*point1] == 'a' || conversion[*point1] == 'e' 
+        || conversion[*point1] == 'o' || conversion[*point1] == 'i' 
+        || conversion[*point1] == 'u' || conversion[*point1] == 'A' 
+        || conversion[*point1] == 'E' || conversion[*point1] == 'I' 
+        || conversion[*point1] == 'O' || conversion[*point1] == 'U')
+    {
+        
+        conversion[(*point2)++] = 'm';
+        conversion[(*point2)++] = 'a';
+        for (int i = 0; i < index; i++)
+        {
+            conversion[(*point2)++] = 'a';
+        }
+    }
+    else
+    {
+        // printf("point1: %d\n", *point1);
+        // printf("point2: %d\n", *point2);
+        char temp = conversion[*point1];
+        for(int i = *point1; i < *point2 - 1; i++)
+        {
+            conversion[i] = conversion[i+1];
+        }
+
+        
+        conversion[*point2 - 1] = temp;
+        conversion[(*point2)++] = 'm';
+        conversion[(*point2)++] = 'a';
+        for (int i = 0; i < index; i++)
+        {
+            conversion[(*point2)++] = 'a';
+        }
+        
+    }
+}
+
+char * toGoatLatin(char * sentence){
+    
+    char *counter = sentence;
+    int word_nums = 0;
+    int sentence_length = strlen(sentence);
+    while( *sentence != '\0')
+    {
+        if (*sentence == ' ')
+        {
+            word_nums++;    
+        }
+        sentence++;
+    }
+    sentence -= sentence_length;
+    word_nums++;
+    int a_char_sums = (1 + word_nums) * (word_nums - 1 + 1) / 2;
+    char *conversion = malloc((sentence_length+1+2*word_nums+1*a_char_sums)*sizeof(char));
+    conversion[sentence_length+2*word_nums+1*a_char_sums] = '\0';
+    
+    int index = 0;
+    int point1 = 0;
+    int point2 = 0;
+    
+    // printf("%c", *sentence);
+    while( *sentence != '\0')
+    {
+        if (*sentence == ' ')
+        {
+            index++;
+            processing(conversion, index, &point1, &point2);
+            conversion[point2] = ' ';
+            point1 = ++point2;
+            sentence++;
+        }
+        conversion[point2] = *sentence;
+        point2++;
+        sentence++;
+        
+    }
+    index++;
+    processing(conversion, index, &point1, &point2);
+    
+    
+    return conversion;
+    
+}
